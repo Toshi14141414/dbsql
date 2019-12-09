@@ -8,6 +8,24 @@ BEGIN
     (uid, first_name, last_name, gender, passW);
 END$$
 
+DROP PROCEDURE IF EXISTS getAllFeeds;
+DELIMITER $$
+CREATE PROCEDURE getAllFeeds (uid VARCHAR(30))
+BEGIN
+	SELECT Thread.tid, ttype, Thread.email, title, date(start_time) AS start_date
+    FROM Access JOIN Thread USING (tid)
+    WHERE Access.email = uid AND NOT Thread.ttype = 'JoinBlock' AND NOT Thread.ttype = 'FriendRequest';
+END$$
+
+DROP PROCEDURE IF EXISTS getProfile;
+DELIMITER $$
+CREATE PROCEDURE getProfile (uid VARCHAR(30))
+BEGIN
+	SELECT email, fname, lname, aid, apt, gender, descrip, img_path
+    FROM Users
+    WHERE email = uid;
+END$$
+
 DROP PROCEDURE IF EXISTS EnterAddress;
 DELIMITER $$
 CREATE PROCEDURE EnterAddress (uid VARCHAR(30), 
@@ -47,6 +65,82 @@ BEGIN
         WHERE email = uid;
     
 END$$
+
+
+DROP FUNCTION IF EXISTS hasUnreadRequest;
+DELIMITER $$
+CREATE FUNCTION hasUnreadRequest(uid VARCHAR(30))
+RETURNS INT
+DETERMINISTIC
+BEGIN
+  DECLARE nResults INT;  
+  SELECT COUNT(*)
+  FROM
+  Receives JOIN Message USING (mid) JOIN 
+  (SELECT tid
+  FROM Access JOIN Thread USING(tid)
+  WHERE Access.email = uid AND 
+  Thread.ttype = 'JoinBlock' OR Thread.ttype = 'FriendRequest') AS accessThreads USING (tid)
+  WHERE Receives.email = uid AND Receives.stat = 'UNREAD'
+  INTO nResults;
+
+  IF nResults = 0 THEN 
+	RETURN false;
+  ELSE 
+	RETURN true;
+  END IF;
+END $$
+
+DROP FUNCTION IF EXISTS getCurrentBlock;
+DELIMITER $$
+CREATE FUNCTION getCurrentBlock(uid VARCHAR(30))
+RETURNS INT
+DETERMINISTIC
+BEGIN
+  DECLARE n INT;
+  DECLARE nResults INT;
+  
+  SELECT COUNT(*)
+  FROM Joins
+  WHERE req_email = uid AND jstatus = 'JOINED'
+  INTO nResults;
+  
+  IF nResults = 0 THEN 
+	SELECT -1 INTO n;
+  ELSE 
+	SELECT bid AS hid
+	FROM Joins
+	WHERE req_email = uid  AND jstatus = 'JOINED' LIMIT 1
+	INTO  n;
+  END IF;
+  RETURN n;
+END $$
+
+DROP FUNCTION IF EXISTS getCurrentHood;
+DELIMITER $$
+CREATE FUNCTION getCurrentHood(uid VARCHAR(30))
+RETURNS INT
+DETERMINISTIC
+BEGIN
+   DECLARE block_id INT;
+   DECLARE hood_id INT;
+   
+   SELECT getCurrentBlock(uid) INTO block_id;
+   SELECT hid
+	   FROM Blocks
+	   WHERE bid = block_id
+	   LIMIT 1
+       INTO hood_id;
+       
+   IF block_id =-1 OR hood_id IS NULL THEN 
+	   RETURN -1;
+   ELSE
+       RETURN hood_id;
+   END IF;
+   
+END $$
+
+
 
 DROP FUNCTION IF EXISTS ValidateUser;
 DELIMITER $$
@@ -184,9 +278,13 @@ BEGIN
     INTO last_tid
 	FROM Thread WHERE email = uid ;
     
+	INSERT INTO Access (tid, email, stat) VALUES
+    (last_tid, target, 'ACTIVE');
+    
 	INSERT INTO Message(tid, email, body, send_time) VALUES
 	(last_tid, uid, msg_body, send_time);
     
+    /*Access*/
 END$$
 
 

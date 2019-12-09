@@ -135,7 +135,10 @@ INSERT INTO Message(tid, email, body, send_time) VALUES
 -- INSERT INTO Thread (tid, ttype, title, email, start_time, target_uid) VALUES
 -- (202,  'Neighbour',  'Hi Jack, I just want to say hello',       'Qc690@gmail.com', '2019-10-15 09:00:00');
 
+call StartMessageWith('Od356@gmail.com', 'py615@gmail.com', 'Friend',
+					'Greeting From Oliver', 'Hi there.', '2019-10-15 09:00:00');
+
 
 call StartMessageWith('Qc690@gmail.com', 'Nj303@gmail.com', 'Neighbour',
-					'Greeting', 'Hi Jack, I just want to say hello.', '2019-10-15 09:00:00')
+					'Greeting', 'Hi Jack, I just want to say hello.', '2019-10-15 09:00:00');
 
