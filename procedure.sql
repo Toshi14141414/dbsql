@@ -8,13 +8,69 @@ BEGIN
     (uid, first_name, last_name, gender, passW);
 END$$
 
+DROP PROCEDURE IF EXISTS getHoodFeeds;
+DELIMITER $$
+CREATE PROCEDURE getHoodFeeds (uid VARCHAR(30))
+BEGIN
+	SELECT thread_id, ttype, sender_id, fname, lname, title, start_date
+    FROM Users JOIN 
+    (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
+    FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
+    JOIN Thread USING (tid)  
+	WHERE NOT Thread.ttype = 'JoinBlock' AND Thread.ttype = 'Hood') AS ResultThreads
+    WHERE Users.email = sender_id;
+END$$
+
+DROP PROCEDURE IF EXISTS getBlockFeeds;
+DELIMITER $$
+CREATE PROCEDURE getBlockFeeds (uid VARCHAR(30))
+BEGIN
+	SELECT thread_id, ttype, sender_id, fname, lname, title, start_date
+    FROM Users JOIN 
+    (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
+    FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
+    JOIN Thread USING (tid)  
+	WHERE NOT Thread.ttype = 'JoinBlock' AND Thread.ttype = 'Block') AS ResultThreads
+    WHERE Users.email = sender_id;
+END$$
+
+DROP PROCEDURE IF EXISTS getNeighbourFeeds;
+DELIMITER $$
+CREATE PROCEDURE getNeighbourFeeds (uid VARCHAR(30))
+BEGIN
+SELECT thread_id, ttype, sender_id, fname, lname, title, start_date
+    FROM Users JOIN 
+    (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
+    FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
+    JOIN Thread USING (tid)  
+	WHERE NOT Thread.ttype = 'JoinBlock' AND Thread.ttype = 'Neighbour') AS ResultThreads
+    WHERE Users.email = sender_id;
+END$$
+
+DROP PROCEDURE IF EXISTS getFriendFeeds;
+DELIMITER $$
+CREATE PROCEDURE getFriendFeeds (uid VARCHAR(30))
+BEGIN
+	SELECT thread_id, ttype, sender_id, fname, lname, title, start_date
+    FROM Users JOIN 
+    (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
+    FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
+    JOIN Thread USING (tid)  
+	WHERE NOT Thread.ttype = 'JoinBlock' AND Thread.ttype = 'Friend' OR Thread.ttype = 'AllFriends') AS ResultThreads
+    WHERE Users.email = sender_id;
+END$$
+
 DROP PROCEDURE IF EXISTS getAllFeeds;
 DELIMITER $$
 CREATE PROCEDURE getAllFeeds (uid VARCHAR(30))
 BEGIN
-	SELECT Thread.tid, ttype, Thread.email, title, date(start_time) AS start_date
-    FROM Access JOIN Thread USING (tid)
-    WHERE Access.email = uid AND NOT Thread.ttype = 'JoinBlock' AND NOT Thread.ttype = 'FriendRequest';
+	SELECT thread_id, ttype, sender_id, fname, lname, title, start_date
+    FROM Users JOIN 
+    (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
+    FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
+    JOIN Thread USING (tid)  
+	WHERE NOT Thread.ttype = 'JoinBlock' AND NOT Thread.ttype = 'JoinBlock' AND NOT Thread.ttype = 'FriendRequest') AS ResultThreads
+    WHERE Users.email = sender_id;
 END$$
 
 DROP PROCEDURE IF EXISTS getProfile;
@@ -187,22 +243,28 @@ DROP PROCEDURE IF EXISTS ListAllNeighbours;
 DELIMITER $$
 CREATE PROCEDURE ListAllNeighbours (uid VARCHAR(30))
 BEGIN
-	SELECT uid2 AS Neighbourid
+	SELECT nei_id, fname, lname, gender, descrip, img_path
+    FROM Users JOIN (SELECT uid2 AS nei_id
     FROM Neighbour 
-    WHERE uid1 = uid AND stat = 'VALID';
+    WHERE uid1 = uid AND stat = 'VALID') AS NList
+    WHERE nei_id = email;
 END$$
 
 DROP PROCEDURE IF EXISTS ListAllFriends;
 DELIMITER $$
 CREATE PROCEDURE ListAllFriends (uid VARCHAR(30))
 BEGIN
-	SELECT uid2 AS friendid
+	SELECT friend_id, fname, lname, gender, descrip, img_path
+    FROM 
+    Users Join (
+	SELECT uid2 AS friend_id
 	FROM Friend
 	WHERE uid1 = uid AND stat = 'APPROVED'
 	UNION 
 	SELECT uid1 AS friendid
 	FROM Friend
-	WHERE uid2 = uid AND stat = 'APPROVED';
+	WHERE uid2 = uid AND stat = 'APPROVED') AS FriendList
+    WHERE friend_id = email;
 END$$
 
 -- DROP PROCEDURE IF EXISTS ListMessages;
