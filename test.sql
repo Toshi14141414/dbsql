@@ -136,9 +136,13 @@ INSERT INTO Message(tid, email, body, send_time) VALUES
 -- (202,  'Neighbour',  'Hi Jack, I just want to say hello',       'Qc690@gmail.com', '2019-10-15 09:00:00');
 
 call StartMessageWith('Od356@gmail.com', 'py615@gmail.com', 'Friend',
-					'Greeting From Oliver', 'Hi there.', '2019-10-15 09:00:00');
+					'Greeting From Oliver', 'Hi there.');
 
 
 call StartMessageWith('Qc690@gmail.com', 'Nj303@gmail.com', 'Neighbour',
-					'Greeting', 'Hi Jack, I just want to say hello.', '2019-10-15 09:00:00');
+					'Greeting', 'Hi Jack, I just want to say hello.');
 
+call StartMessageIn('Nj303@gmail.com', 'Hood',
+					'First Message in Hood', 'This is the first message in Hood.');
+call StartMessageIn('Nj303@gmail.com', 'Block',
+					'First Message in Block', 'This is the first message in Block.');

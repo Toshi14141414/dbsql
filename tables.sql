@@ -27,7 +27,6 @@ CREATE TABLE Users(
     CONSTRAINT FK_AID FOREIGN KEY (aid) REFERENCES Address(aid)
 );
 
-
 /* Blocks and Hoods*/
 
 CREATE TABLE Hoods(

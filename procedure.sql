@@ -1,3 +1,4 @@
+
 DROP PROCEDURE IF EXISTS replyToThread;
 DELIMITER $$
 CREATE PROCEDURE replyToThread (thread_id INT, uid VARCHAR(30), reply VARCHAR(100))
@@ -386,13 +387,13 @@ END$$
 DROP PROCEDURE IF EXISTS StartMessageWith;
 DELIMITER $$
 CREATE PROCEDURE StartMessageWith(uid VARCHAR(30), target VARCHAR(30), msg_type VARCHAR(30), 
-							 msg_title VARCHAR(100), msg_body VARCHAR(100), send_time timestamp)
+							 msg_title VARCHAR(100), msg_body VARCHAR(100))
 BEGIN
 	
     DECLARE last_tid INT;
     
 	INSERT INTO Thread (email, ttype, title, start_time, target_uid) VALUES
-	(uid,  msg_type, msg_title,send_time, target);
+	(uid,  msg_type, msg_title,CURRENT_TIMESTAMP(), target);
 	
     SELECT MAX(tid)
     INTO last_tid
@@ -402,9 +403,28 @@ BEGIN
     (last_tid, target, 'ACTIVE');
     
 	INSERT INTO Message(tid, email, body, send_time) VALUES
-	(last_tid, uid, msg_body, send_time);
+	(last_tid, uid, msg_body, CURRENT_TIMESTAMP());
+END$$
+
+
+DROP PROCEDURE IF EXISTS StartMessageIn;
+DELIMITER $$
+CREATE PROCEDURE StartMessageIn(uid VARCHAR(30), msg_type VARCHAR(30), 
+							 msg_title VARCHAR(100), msg_body VARCHAR(100))
+BEGIN
+	
+    DECLARE last_tid INT;
     
-    /*Access*/
+	INSERT INTO Thread (email, ttype, title, start_time) VALUES
+	(uid, msg_type, msg_title, CURRENT_TIMESTAMP());
+	
+    SELECT MAX(tid)
+    INTO last_tid
+	FROM Thread WHERE email = uid ;
+    
+	INSERT INTO Message(tid, email, body, send_time) VALUES
+	(last_tid, uid, msg_body, CURRENT_TIMESTAMP());
+    
 END$$
 
 

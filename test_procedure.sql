@@ -17,10 +17,10 @@ call getFriendFeeds('Od356@gmail.com');
 -- call getNeighbourFeeds('Nj303@gmail.com');
 -- SELECT hasUnreadRequest('Yc4184@gmail.com');
 -- SELECT hasUnreadRequest('mp5386@gmail.com');
--- SELECT * FROM Access;
+SELECT * FROM Access;
 SELECT * FROM Thread;
 SELECT * FROM Message;
--- SELECT * FROM Receives;
+SELECT * FROM Receives;
 call getThreadInfo(100);
 call getMessageFromThread(100);
 
@@ -33,3 +33,4 @@ call ListAllNeighbours('Qc690@gmail.com');
 SELECT CURRENT_TIMESTAMP();
 
 SELECT * FROM RECEIVES;
+
