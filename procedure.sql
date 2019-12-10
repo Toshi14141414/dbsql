@@ -1,3 +1,61 @@
+DROP PROCEDURE IF EXISTS replyToThread;
+DELIMITER $$
+CREATE PROCEDURE replyToThread (thread_id INT, uid VARCHAR(30), reply VARCHAR(100))
+BEGIN
+    INSERT INTO Message (tid, email, body, send_time) VALUES
+    (thread_id, uid, reply, CURRENT_TIMESTAMP());
+END$$ 
+
+DROP PROCEDURE IF EXISTS getThreadInfo;
+DELIMITER $$
+CREATE PROCEDURE getThreadInfo (thread_id INT)
+BEGIN
+    SELECT tid, ttype, title, start_time
+    FROM Thread WHERE tid = thread_id;
+END $$ 
+
+DROP PROCEDURE IF EXISTS getMessageFromThread;
+DELIMITER $$
+CREATE PROCEDURE getMessageFromThread (thread_id INT)
+BEGIN
+	SELECT mid, email, fname, lname, send_time, body FROM 
+    Message JOIN Users USING (email)
+    WHERE
+    tid = thread_id
+    ORDER BY mid ASC;
+END $$ 
+
+DROP FUNCTION IF EXISTS BlockContainAddress;
+DELIMITER $$
+CREATE FUNCTION BlockContainAddress(a_long float, a_lat float, sw_long float, sw_lat float, ne_long float, ne_lat float)
+RETURNS BOOL
+DETERMINISTIC
+BEGIN
+	RETURN TRUE;
+	-- RETURN ne_long > a_long AND ne_lat < a_lat AND sw_long < a_long AND sw_lat > a_lat;
+END $$
+/*
+list all available blocks for the user
+*/
+DROP PROCEDURE IF EXISTS ListAvailbleBlocksFor;
+DELIMITER $$
+CREATE PROCEDURE ListAvailbleBlocksFor (uid VARCHAR(30))
+BEGIN
+	/*get long and lat of user*/
+    DECLARE user_long float;
+    DECLARE user_lat float;
+    
+    SELECT longtitude INTO user_long FROM 
+    Users JOIN Address USING (aid) WHERE email = uid;
+    
+    SELECT latitude INTO user_lat FROM 
+    Users JOIN Address USING (aid) WHERE email = uid;
+    
+    SELECT bid, bname, nPeopleInBlock(bid)
+    FROM Blocks
+    WHERE BlockContainAddress(user_long, user_lat, southwest_long, southwest_lat, northeast_long, northeast_lat);
+END$$
+
 DROP PROCEDURE IF EXISTS CreateAccount;
 DELIMITER $$
 CREATE PROCEDURE CreateAccount (uid VARCHAR(30), first_name VARCHAR(30), last_name VARCHAR(30),

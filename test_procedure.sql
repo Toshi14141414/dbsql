@@ -8,7 +8,7 @@ use PROJECT1;
 
 -- SELECT getCurrentBlock('Od356@gmail.com');
 -- SELECT getCurrentBlock('mp5386@gmail.com');
-  
+call ListAvailbleBlocksFor('Od356@gmail.com');
 -- SELECT * FROM Access;
 -- SELECT * FROM Thread;  
 -- call getProfile('Od356@gmail.com');
@@ -18,12 +18,18 @@ call getFriendFeeds('Od356@gmail.com');
 -- SELECT hasUnreadRequest('Yc4184@gmail.com');
 -- SELECT hasUnreadRequest('mp5386@gmail.com');
 -- SELECT * FROM Access;
--- SELECT * FROM Thread;
--- SELECT * FROM Message;
+SELECT * FROM Thread;
+SELECT * FROM Message;
 -- SELECT * FROM Receives;
-
+call getThreadInfo(100);
+call getMessageFromThread(100);
 
 -- SELECT getCurrentHood('Od356@gmail.com');
 -- SELECT getCurrentHood('mp5386@gmail.com');
 call ListAllFriends('Od356@gmail.com');
 call ListAllNeighbours('Qc690@gmail.com');
+
+
+SELECT CURRENT_TIMESTAMP();
+
+SELECT * FROM RECEIVES;
