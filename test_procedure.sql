@@ -6,6 +6,7 @@ use PROJECT1;
 -- SELECT * FROM Users;
 -- SELECT * FROM Address;
 
+call listAllNews('Nj303@gmail.com');
 -- SELECT getCurrentBlock('Od356@gmail.com');
 -- SELECT getCurrentBlock('mp5386@gmail.com');
 call ListAvailbleBlocksFor('Od356@gmail.com');

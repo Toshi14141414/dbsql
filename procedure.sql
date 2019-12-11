@@ -1,3 +1,15 @@
+DROP PROCEDURE IF EXISTS listAllNews;
+DELIMITER $$
+CREATE PROCEDURE listAllNews (uid VARCHAR(30))
+BEGIN
+    SELECT thread_id, ttype, sender_id, fname, lname, title, start_time
+    FROM Users JOIN 
+    (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_time
+    FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
+    JOIN Thread USING (tid)  
+	WHERE Thread.ttype = 'JoinBlock' OR  Thread.ttype = 'FriendRequest') AS ResultThreads
+    WHERE Users.email = sender_id;
+END$$ 
 
 DROP PROCEDURE IF EXISTS replyToThread;
 DELIMITER $$
@@ -76,7 +88,7 @@ BEGIN
     (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
     FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
     JOIN Thread USING (tid)  
-	WHERE NOT Thread.ttype = 'JoinBlock' AND Thread.ttype = 'Hood') AS ResultThreads
+	WHERE Thread.ttype = 'Hood') AS ResultThreads
     WHERE Users.email = sender_id;
 END$$
 
@@ -89,7 +101,7 @@ BEGIN
     (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
     FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
     JOIN Thread USING (tid)  
-	WHERE NOT Thread.ttype = 'JoinBlock' AND Thread.ttype = 'Block') AS ResultThreads
+	WHERE  Thread.ttype = 'Block') AS ResultThreads
     WHERE Users.email = sender_id;
 END$$
 
@@ -102,7 +114,7 @@ SELECT thread_id, ttype, sender_id, fname, lname, title, start_date
     (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
     FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
     JOIN Thread USING (tid)  
-	WHERE NOT Thread.ttype = 'JoinBlock' AND Thread.ttype = 'Neighbour') AS ResultThreads
+	WHERE Thread.ttype = 'Neighbour') AS ResultThreads
     WHERE Users.email = sender_id;
 END$$
 
@@ -115,7 +127,7 @@ BEGIN
     (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
     FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
     JOIN Thread USING (tid)  
-	WHERE NOT Thread.ttype = 'JoinBlock' AND Thread.ttype = 'Friend' OR Thread.ttype = 'AllFriends') AS ResultThreads
+	WHERE Thread.ttype = 'Friend' OR Thread.ttype = 'AllFriends') AS ResultThreads
     WHERE Users.email = sender_id;
 END$$
 
@@ -128,7 +140,7 @@ BEGIN
     (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, title, date(start_time) AS start_date
     FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
     JOIN Thread USING (tid)  
-	WHERE NOT Thread.ttype = 'JoinBlock' AND NOT Thread.ttype = 'JoinBlock' AND NOT Thread.ttype = 'FriendRequest') AS ResultThreads
+	WHERE NOT Thread.ttype = 'JoinBlock' AND NOT Thread.ttype = 'FriendRequest') AS ResultThreads
     WHERE Users.email = sender_id;
 END$$
 

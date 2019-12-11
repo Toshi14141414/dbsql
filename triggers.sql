@@ -22,10 +22,16 @@ CREATE TRIGGER JoinAfterTrigger
     AFTER INSERT
     ON Joins FOR EACH ROW
 BEGIN
+
+	DECLARE first_name VARCHAR(30);
+    DECLARE last_name VARCHAR(30);
+    SELECT fname INTO first_name FROM Users WHERE email = new.req_email;
+    SELECT lname INTO last_name FROM Users WHERE email = new.req_email;
+    
 	IF nPeopleInBlock(new.bid)>0 AND NOT (nPeopleInBlock(new.bid) = 1 AND new.jstatus = 'JOINED') THEN
 		 /* all people in the block receives that request*/
 		INSERT INTO Thread(ttype, email, title, start_time, target_bid)
-		SELECT 'JoinBlock', new.req_email, 'Join Request', new.request_time, new.bid;        
+		SELECT 'JoinBlock', new.req_email, CONCAT('Hi, ', first_name, ' ', last_name, ' wants to join your block.'), new.request_time, new.bid;        
     END IF;
 
 END$$
@@ -38,9 +44,13 @@ CREATE TRIGGER FriendTrigger
     AFTER INSERT
     ON Friend FOR EACH ROW
 BEGIN
-
+	DECLARE first_name VARCHAR(30);
+    DECLARE last_name VARCHAR(30);
+    SELECT fname INTO first_name FROM Users WHERE email = new.uid1;
+    SELECT lname INTO last_name FROM Users WHERE email = new.uid1;
+    
 	INSERT INTO Thread(ttype, email, title, start_time, target_uid)
-	SELECT 'FriendRequest', new.uid1, 'Friend Request', new.request_time, new.uid2;    
+	SELECT 'FriendRequest', new.uid1, CONCAT('Hi, ', first_name, ' ', last_name, ' wants to be your friend.'), new.request_time, new.uid2;    
     
 END $$
 
