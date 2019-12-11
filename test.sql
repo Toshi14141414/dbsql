@@ -146,3 +146,10 @@ call StartMessageIn('Nj303@gmail.com', 'Hood',
 					'First Message in Hood', 'This is the first message in Hood.');
 call StartMessageIn('Nj303@gmail.com', 'Block',
 					'First Message in Block', 'This is the first message in Block.');
+
+call StartMessageIn('py615@gmail.com', 'Block', 'Block msg', 'Hi friends.');
+                    
+call sendFriendRequest('Nj303@gmail.com', 'Od356@gmail.com');
+call respondToFriendRequest('Od356@gmail.com', 'Nj303@gmail.com', 'APPROVED');
+
+

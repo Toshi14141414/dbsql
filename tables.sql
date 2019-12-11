@@ -87,7 +87,6 @@ CREATE TABLE Approves(
 /*
 Friend and Neighbour
 */
-
 CREATE TABLE Friend(
 	uid1 VARCHAR(30) NOT NULL,
     uid2 VARCHAR(30) NOT NULL,
