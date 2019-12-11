@@ -8,7 +8,8 @@ BEGIN
     FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
     JOIN Thread USING (tid)  
 	WHERE Thread.ttype = 'JoinBlock' OR  Thread.ttype = 'FriendRequest') AS ResultThreads
-    WHERE Users.email = sender_id;
+    WHERE Users.email = sender_id
+    ORDER BY start_time, Thread.ttype DESC;
 END$$ 
 
 DROP PROCEDURE IF EXISTS replyToThread;
