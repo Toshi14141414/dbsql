@@ -95,6 +95,5 @@ call JoinBlock('mp5386@gmail.com', 2);
 call sendFriendRequest('Od356@gmail.com', 'py615@gmail.com');
 call respondToFriendRequest('py615@gmail.com', 'Od356@gmail.com', 'APPROVED');
 
-
 select * from message;
 select * from message where locate('I am', body);

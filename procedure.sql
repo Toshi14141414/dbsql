@@ -81,11 +81,7 @@ BEGIN
     WHERE (uid1 = request_uid AND uid2 = respond_uid)
     OR (uid2 = request_uid AND uid1 = respond_uid)
     INTO recordExists;
-    IF recordExists >0  THEN 
-		UPDATE Friend SET stat = 'REQUESTED', request_time =  CURRENT_TIMESTAMP()
-         WHERE (uid1 = request_uid AND uid2 = respond_uid)
-		OR (uid2 = request_uid AND uid1 = respond_uid);
-    ELSE 
+    IF recordExists = 0  THEN 
 		INSERT INTO Friend (uid1, uid2, stat, request_time) 
         VALUES (request_uid, respond_uid, 'REQUESTED', CURRENT_TIMESTAMP());
     END IF;
@@ -581,3 +577,25 @@ BEGIN
 	Receives.email = uid AND locate(keyword, body)
     AND ttype <>'JoinBlock' AND ttype <> 'FriendRequest';
 END$$
+
+
+DROP FUNCTION IF EXISTS isFriend;
+DELIMITER $$
+CREATE FUNCTION isFriend(id1 VARCHAR(30), id2 VARCHAR(30))
+RETURNS INT
+DETERMINISTIC
+BEGIN
+	DECLARE isF BOOL;
+    SELECT count(*) > 0 FROM 
+    Friend WHERE (uid1 = id1 AND uid2 = id2) OR (uid1 = id2 AND uid2 = id1)
+    INTO isF;
+
+	IF id1 = id2 THEN
+		  RETURN -1;
+    END IF;
+    IF isF THEN 
+		  RETURN 0;
+    ELSE
+          RETURN 1;
+    END IF;    
+END $$
