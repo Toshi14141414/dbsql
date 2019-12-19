@@ -129,11 +129,10 @@ CREATE TABLE Message(
 	email VARCHAR(30),
     body  VARCHAR(100) NOT NULL,
     send_time timestamp NOT NULL,
-    referid int,
     aid int,
     PRIMARY KEY (mid),
+    CONSTRAINT FK_MSG_THREAD FOREIGN KEY (tid) REFERENCES Thread(tid) ON DELETE CASCADE,
 	CONSTRAINT FK_MSG_EMAIL FOREIGN KEY (email) REFERENCES Users(email),
-    CONSTRAINT FK_MSG_MSG   FOREIGN KEY (referid) REFERENCES Message(mid),
     CONSTRAINT FK_MSG_AID   FOREIGN KEY (aid) REFERENCES Address(aid)
 );
 
@@ -153,7 +152,7 @@ CREATE TABLE Access(
 	email VARCHAR(30) NOT NULL,
     stat ENUM('ACTIVE', 'NONACTIVE') NOT NULL,
     PRIMARY KEY (tid, email),
-    CONSTRAINT FK_ATID FOREIGN KEY (tid) REFERENCES Thread(tid),
+    CONSTRAINT FK_ATID FOREIGN KEY (tid) REFERENCES Thread(tid) ON DELETE CASCADE,
     CONSTRAINT FK_AEMAIL FOREIGN KEY (email) REFERENCES Users(email)
 );
 
@@ -164,10 +163,7 @@ CREATE TABLE Receives(
     receive_time timestamp NOT NULL,
     read_time timestamp,
 	PRIMARY KEY (mid, email),
-    CONSTRAINT FK_RECEIVE_MID FOREIGN KEY (mid) REFERENCES Message(mid),
+    CONSTRAINT FK_RECEIVE_MID FOREIGN KEY (mid) REFERENCES Message(mid) ON DELETE CASCADE,
     CONSTRAINT FK_RECEIVE_EMAIL FOREIGN KEY (email) REFERENCES Users(email)
 );
-
-
-
 

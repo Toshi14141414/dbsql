@@ -59,3 +59,13 @@ call ListAllNeighbours('Nj303@gmail.com');
 call readMessgesInThread('py615@gmail.com', 100);
 SELECT * FROM Receives JOIN Message USING (mid) WHERE Receives.email = 'py615@gmail.com';
 
+call sendFriendRequest('py615@gmail.com', 'Qc690@gmail.com');
+SELECT * FROM Thread;
+call respondToFriendRequest('Qc690@gmail.com', 'py615@gmail.com', 'APPROVED');
+
+
+call sendFriendRequest('Nj303@gmail.com', 'Od356@gmail.com');
+call respondToFriendRequest('Od356@gmail.com', 'Nj303@gmail.com', 'APPROVED');
+SELECT * FROM Thread;
+SELECT * FROM Message;
+SELECT * FROM Access;

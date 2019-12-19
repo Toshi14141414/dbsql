@@ -107,7 +107,14 @@ BEGIN
         Joins.bid = new.bid AND
         Joins.request_time = new.request_time;
     END IF;
-	    
+	
+    
+	UPDATE ACCESS SET stat = 'NONACTIVE'
+    WHERE tid IN 
+		(SELECT tid FROM Thread 
+		WHERE ttype = 'JoinBlock' AND email = new.req_email AND target_bid = new.bid)
+	AND email = new.email;
+    
 END$$
 
 
@@ -291,3 +298,27 @@ BEGIN
     WHERE Message.mid = new.mid AND
     Access.stat = 'ACTIVE';
 END$$
+
+DROP TRIGGER IF EXISTS FriendStatUpdateTrigger;
+DELIMITER $$
+CREATE TRIGGER FriendStatUpdateTrigger
+    AFTER UPDATE
+    ON Friend FOR EACH ROW
+BEGIN
+
+	/* uid1 uid2*/
+    IF old.stat = 'REQUESTED' AND new.stat <> 'REQUESTED' THEN
+		/* update thread stat*/
+		DELETE FROM Thread 
+		WHERE ttype = 'FriendRequest'
+		AND email = new.uid1 AND target_uid = new.uid2
+		OR email = new.uid2 AND target_uid = new.uid1;
+        
+        
+        
+	END IF;
+   
+END$$
+
+
+

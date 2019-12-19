@@ -22,6 +22,7 @@ CREATE PROCEDURE respondToJoinBlock (uid VARCHAR(30), request_uid VARCHAR(30), r
 BEGIN
     INSERT INTO Approves (email, req_email, bid, request_time, choice, choice_time) 
     VALUES (uid, request_uid, request_bid, req_time, result, CURRENT_TIMESTAMP());
+        
 END$$ 
 
 DROP PROCEDURE IF EXISTS addNeighbour;
@@ -40,9 +41,11 @@ DROP PROCEDURE IF EXISTS respondToFriendRequest;
 DELIMITER $$
 CREATE PROCEDURE respondToFriendRequest (respond_uid VARCHAR(30), request_uid VARCHAR(30), result VARCHAR(30))
 BEGIN
+	
     UPDATE Friend SET stat = result, establish_time = CURRENT_TIMESTAMP()
 	WHERE (uid1 = request_uid AND uid2 = respond_uid)
-    OR (uid2 = request_uid AND uid1 = respond_uid);
+    OR (uid2 = request_uid AND uid1 = respond_uid);    
+
 END$$ 
 
 DROP PROCEDURE IF EXISTS sendFriendRequest;
@@ -73,13 +76,15 @@ BEGIN
     SELECT thread_id, ttype, sender_id, target_bid, fname, lname, title, start_time
     FROM Users JOIN 
     (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, target_bid, title, date(start_time) AS start_time
-    FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid) As AccessibleThreads
+    FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid AND stat = 'ACTIVE') As AccessibleThreads
     JOIN Thread USING (tid)  
 	WHERE Thread.ttype = 'JoinBlock') AS ResultThreads
     WHERE Users.email = sender_id
     ORDER BY ttype, start_time DESC;
 END$$ 
 
+
+/*see if the request is alread read*/
 DROP PROCEDURE IF EXISTS listAllFriendRequests;
 DELIMITER $$
 CREATE PROCEDURE listAllFriendRequests (uid VARCHAR(30))
