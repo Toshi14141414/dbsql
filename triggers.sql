@@ -149,6 +149,12 @@ BEGIN
         Thread.email = Joins.req_email AND /*whoever sends the request still waits*/
         Joins.jstatus = 'WAIT';
         
+        
+        /*delete thread*/
+        DELETE FROM Thread
+        WHERE ttype = 'JoinBlock' AND
+        email = new.req_email AND target_bid = new.bid;
+        
     END IF;
     
     
