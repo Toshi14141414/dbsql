@@ -578,9 +578,6 @@ BEGIN
 	SELECT DISTINCT tid, title
     FROM Receives JOIN Message USING (mid) JOIN Thread using (tid)
     WHERE 
-	Receives.email = uid AND body LIKE CONCAT('%', keyword,'%')
+	Receives.email = uid AND locate(keyword, body)
     AND ttype <>'JoinBlock' AND ttype <> 'FriendRequest';
 END$$
-
-
-
