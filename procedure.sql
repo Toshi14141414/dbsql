@@ -307,7 +307,6 @@ BEGIN
 	UPDATE USERS SET aid = addressID, apt = apt_info
 	WHERE email = uid;
 
-
 END$$
 
 

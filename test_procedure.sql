@@ -70,7 +70,7 @@ SELECT * FROM Thread;
 SELECT * FROM Message;
 SELECT * FROM Access;
 
-call CreateAccount('mp5386@gmail.com', 'Mingyuan', 'Pang', 	'Female', 	'password');
+
 SELECT * FROM USERS;
 SELECT ValidateUser('mp5386@gmail.com', 'pasord');
 -- INSERT INTO Users(email, fname, lname, gender, pword, aid, apt) VALUES
@@ -87,3 +87,10 @@ SELECT * FROM JOINS;
 SELECT * FROM Thread;
 
 SELECT * FROM Access;
+
+call CreateAccount('mp5386@gmail.com', 'Mingyuan', 'Pang', 	'Female', 	'password');
+call sendFriendRequest('mp5386@gmail.com', 'Od356@gmail.com');
+call JoinBlock('mp5386@gmail.com', 2);
+
+call sendFriendRequest('Od356@gmail.com', 'py615@gmail.com');
+call respondToFriendRequest('py615@gmail.com', 'Od356@gmail.com', 'APPROVED');
