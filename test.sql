@@ -15,10 +15,9 @@ Addison: lower block
 Amberly: upper block
 */
 
-INSERT INTO Address (address, city, state, country, longtitude, latitude) VALUES
-('The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York', 'U.S', 40.688878, -73.984662),
-('The Amberly Apartments 120 Nassau Street', 'Brooklyn', 'New York', 'U.S', 40.698528, -73.986615);
-
+-- INSERT INTO Address (address, city, state, country, longtitude, latitude) VALUES
+-- ('The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York', 'U.S', 40.688878, -73.984662),
+-- ('The Amberly Apartments 120 Nassau Street', 'Brooklyn', 'New York', 'U.S', 40.698528, -73.986615);
 
 call CreateAccount('Od356@gmail.com', 'Oliver', 'David', 	'Male', 	'password');
 call CreateAccount('py615@gmail.com', 'Piao', 'Yang', 		'Male', 	'password');
@@ -27,12 +26,16 @@ call CreateAccount('Yc4184@gmail.com', 'Yue', 'Chen', 		'Female', 	'password');
 call CreateAccount('Nj303@gmail.com', 'Nikka', 'Jack', 		'Female', 	'password');
 call CreateAccount('Qc690@gmail.com', 'Qi', 'Yang', 		'Male', 	'password');
 
-call EnterAddress('Od356@gmail.com', '15A', 'The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York');
-call EnterAddress('py615@gmail.com', '15A', 'The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York');
-call EnterAddress('hz2162@gmail.com', '15A', 'The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York');
-call EnterAddress('Yc4184@gmail.com', '15A', 'The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York');
-call EnterAddress('Nj303@gmail.com', '15A', 'The Amberly Apartments 120 Nassau Street', 'Brooklyn', 'New York');
-call EnterAddress('Qc690@gmail.com', '15A', 'The Amberly Apartments 120 Nassau Street', 'Brooklyn', 'New York');
+call EnterAddress('Od356@gmail.com', '15A', 40.688919, -73.984866);
+call EnterAddress('py615@gmail.com', '15A', 40.688919, -73.984866);
+call EnterAddress('hz2162@gmail.com', '15A', 40.688919, -73.984866);
+call EnterAddress('Yc4184@gmail.com', '15A', 40.688919, -73.984866);
+
+call EnterAddress('Nj303@gmail.com', '15A', 40.698552, -73.986239);
+call EnterAddress('Qc690@gmail.com', '15A', 40.698552, -73.986239);
+
+
+call listNearBlocks('Od356@gmail.com', 40.688919, -73.984866);
 
 -- INSERT INTO Users(email, fname, lname, gender, pword, aid, apt) VALUES
 -- ('Od356@gmail.com', 'Oliver', 'David', 		'Male', 	'password', 1, '15A'), /*addison*/

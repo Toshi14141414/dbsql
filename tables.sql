@@ -4,12 +4,12 @@ USE PROJECT1;
 
 CREATE TABLE Address(
 	aid INT NOT NULL AUTO_INCREMENT,
-    address VARCHAR(100) NOT NULL,
-    city VARCHAR(100) NOT NULL,
-    state VARCHAR(100) NOT NULL,
+    address VARCHAR(100),
+    city VARCHAR(100),
+    state VARCHAR(100),
     country VARCHAR(100),
-    longtitude float,
-    latitude float,
+    longtitude float NOT NULL,
+    latitude float NOT NULL,
     PRIMARY KEY (aid)
 );
 

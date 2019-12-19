@@ -1,3 +1,25 @@
+DROP FUNCTION IF EXISTS containsInBlock;
+DELIMITER $$
+CREATE FUNCTION containsInBlock(lat float, longt float, 
+								southwest_long float, southwest_lat float, northeast_long float, northeast_lat float)
+RETURNS BOOL
+DETERMINISTIC
+BEGIN
+--   DECLARE contain BOOL;
+--   SELECT TRUE
+--   INTO contain;
+  RETURN true;
+END $$
+
+DROP PROCEDURE IF EXISTS listNearBlocks;
+DELIMITER $$
+CREATE PROCEDURE listNearBlocks (uid VARCHAR(30), lat float, longt float)
+BEGIN
+    SELECT bid, southwest_long, southwest_lat, northeast_long, northeast_lat FROM Blocks
+    WHERE containsInBlock(lat, longt, southwest_long, southwest_lat, northeast_long, northeast_lat);
+END$$ 
+
+
 DROP PROCEDURE IF EXISTS readMessgesInThread;
 DELIMITER $$
 CREATE PROCEDURE readMessgesInThread (uid VARCHAR(30), thread_id INT)
@@ -255,44 +277,36 @@ BEGIN
     WHERE email = uid;
 END$$
 
+
+
 DROP PROCEDURE IF EXISTS EnterAddress;
 DELIMITER $$
 CREATE PROCEDURE EnterAddress (uid VARCHAR(30), 
 							   apt_info VARCHAR(30),
-							   addr VARCHAR(100),
-                               city_ VARCHAR(100),
-							   state_ VARCHAR(100))
+								lat float,
+								longt float)
 BEGIN
-	/*first check if address exists*/
+
+	DECLARE addressID INT;
     DECLARE addressExists BOOL;
-    DECLARE addressID INT;
     
     SELECT count(*)>0 FROM Address
-    WHERE address = addr AND city = city_ AND state = state_
+    WHERE latitude = lat AND longtitude = longt
     INTO addressExists;
     
-    /*if yes, then update users*/
-    /*if not, update address and users table*/
-    
-    IF (addressExists) THEN 
-		SELECT aid FROM Address
-		WHERE address = addr AND city = city_ AND state = state_ LIMIT 1
-        INTO addressID;
-        
---         UPDATE USERS SET aid = addressID, apt = apt_info
---         WHERE email = uid;
-	ELSE
-		INSERT INTO Address (address, city, state) VALUES
-		(addr, city_, state_);
-        SELECT MAX(aid) FROM Address
-        WHERE address = addr AND city = city_ AND state = state_ LIMIT 1
-        INTO addressID;
-
+    IF NOT addressExists THEN
+			INSERT INTO Address (latitude, longtitude) VALUES
+			(lat, longt);
     END IF;
     
-		UPDATE USERS SET aid = addressID, apt = apt_info
-        WHERE email = uid;
-    
+	SELECT MAX(aid) FROM Address
+	WHERE latitude = lat AND  longtitude = longt LIMIT 1
+	INTO addressID;
+
+	UPDATE USERS SET aid = addressID, apt = apt_info
+	WHERE email = uid;
+
+
 END$$
 
 
