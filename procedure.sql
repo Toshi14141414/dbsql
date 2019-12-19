@@ -84,6 +84,10 @@ BEGIN
     IF recordExists = 0  THEN 
 		INSERT INTO Friend (uid1, uid2, stat, request_time) 
         VALUES (request_uid, respond_uid, 'REQUESTED', CURRENT_TIMESTAMP());
+    ELSE
+		UPDATE Friend SET stat = 'REQUESTED'
+         WHERE (uid1 = request_uid AND uid2 = respond_uid)
+		OR (uid2 = request_uid AND uid1 = respond_uid);
     END IF;
 END$$ 
 
