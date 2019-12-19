@@ -69,3 +69,19 @@ call respondToFriendRequest('Od356@gmail.com', 'Nj303@gmail.com', 'APPROVED');
 SELECT * FROM Thread;
 SELECT * FROM Message;
 SELECT * FROM Access;
+
+call CreateAccount('mp5386@gmail.com', 'Mingyuan', 'Pang', 	'Female', 	'password');
+SELECT * FROM USERS;
+SELECT ValidateUser('mp5386@gmail.com', 'pasord');
+-- INSERT INTO Users(email, fname, lname, gender, pword, aid, apt) VALUES
+-- ('mp5386@gmail.com', 'Mingyuan', 'Pang', 		'Female', 	'password', 1, '10');
+-- call JoinBlock('mp5386@gmail.com',  2, '2019-12-01 09:00:00');
+-- INSERT INTO Users(email, fname, lname, gender, pword, aid, apt) VALUES
+-- ('mp5388@gmail.com', 'Ming', 'Pang', 		'Female', 	'password', 1, '10');
+-- call JoinBlock('mp5388@gmail.com',  2, '2019-12-01 06:00:00');
+-- SELECT * FROM JOINS;
+-- call listAllBlockRequests('Od356@gmail.com');
+SELECT * FROM USERS;
+use PROJECT1;
+select aes_encrypt('password', 'key');
+

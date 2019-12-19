@@ -18,7 +18,7 @@ CREATE TABLE Users(
     fname VARCHAR(30) NOT NULL,
     lname VARCHAR(30)  NOT NULL,
     gender ENUM ('Male', 'Female', 'Other') NOT NULL,
-    pword VARCHAR(30) NOT NULL,
+    pword  BLOB,
     aid INT,
     apt VARCHAR(30),
     descrip VARCHAR(100),

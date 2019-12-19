@@ -314,8 +314,6 @@ BEGIN
 		AND email = new.uid1 AND target_uid = new.uid2
 		OR email = new.uid2 AND target_uid = new.uid1;
         
-        
-        
 	END IF;
    
 END$$

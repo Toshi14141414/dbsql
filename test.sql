@@ -1,5 +1,6 @@
 Use Project1;
 
+
 /*set up hoods and blocks*/
 INSERT INTO Hoods(hname, southwest_long, southwest_lat, northeast_long, northeast_lat) VALUES
 ('Downtown Brooklyn', 40.691928, -73.993051, 40.705222, -73.981389);
@@ -18,13 +19,28 @@ INSERT INTO Address (address, city, state, country, longtitude, latitude) VALUES
 ('The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York', 'U.S', 40.688878, -73.984662),
 ('The Amberly Apartments 120 Nassau Street', 'Brooklyn', 'New York', 'U.S', 40.698528, -73.986615);
 
-INSERT INTO Users(email, fname, lname, gender, pword, aid, apt) VALUES
-('Od356@gmail.com', 'Oliver', 'David', 		'Male', 	'password', 1, '15A'), /*addison*/
-('py615@gmail.com', 'Piao', 'Yang', 		'Male', 	'password', 1, '15A'), /*addison*/
-('hz2162@gmail.com', 'Hui', 'Zhen', 		'Male', 	'password', 1, '15A'), /*addison*/
-('Yc4184@gmail.com', 'Yue', 'Chen', 		'Female', 	'password', 1, '13B'), /*addison*/
-('Nj303@gmail.com', 'Nikka', 'Jack', 		'Female', 	'password', 2, '2F'),  /*amberly*/
-('Qc690@gmail.com', 'Qi', 'Yang', 			 'Male', 	'password', 2, '9E');  /*amberly*/
+
+call CreateAccount('Od356@gmail.com', 'Oliver', 'David', 	'Male', 	'password');
+call CreateAccount('py615@gmail.com', 'Piao', 'Yang', 		'Male', 	'password');
+call CreateAccount('hz2162@gmail.com', 'Hui', 'Zhen', 		'Male', 	'password');
+call CreateAccount('Yc4184@gmail.com', 'Yue', 'Chen', 		'Female', 	'password');
+call CreateAccount('Nj303@gmail.com', 'Nikka', 'Jack', 		'Female', 	'password');
+call CreateAccount('Qc690@gmail.com', 'Qi', 'Yang', 		'Male', 	'password');
+
+call EnterAddress('Od356@gmail.com', '15A', 'The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York');
+call EnterAddress('py615@gmail.com', '15A', 'The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York');
+call EnterAddress('hz2162@gmail.com', '15A', 'The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York');
+call EnterAddress('Yc4184@gmail.com', '15A', 'The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York');
+call EnterAddress('Nj303@gmail.com', '15A', 'The Amberly Apartments 120 Nassau Street', 'Brooklyn', 'New York');
+call EnterAddress('Qc690@gmail.com', '15A', 'The Amberly Apartments 120 Nassau Street', 'Brooklyn', 'New York');
+
+-- INSERT INTO Users(email, fname, lname, gender, pword, aid, apt) VALUES
+-- ('Od356@gmail.com', 'Oliver', 'David', 		'Male', 	'password', 1, '15A'), /*addison*/
+-- ('py615@gmail.com', 'Piao', 'Yang', 		'Male', 	'password', 1, '15A'), /*addison*/
+-- ('hz2162@gmail.com', 'Hui', 'Zhen', 		'Male', 	'password', 1, '15A'), /*addison*/
+-- ('Yc4184@gmail.com', 'Yue', 'Chen', 		'Female', 	'password', 1, '13B'), /*addison*/
+-- ('Nj303@gmail.com', 'Nikka', 'Jack', 		'Female', 	'password', 2, '2F'),  /*amberly*/
+-- ('Qc690@gmail.com', 'Qi', 'Yang', 			 'Male', 	'password', 2, '9E');  /*amberly*/
 
 call EditProfile('Od356@gmail.com', 'Hi my name is Oliver', 'Od20190801.jpg');
 

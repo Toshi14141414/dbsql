@@ -20,9 +20,10 @@ DROP PROCEDURE IF EXISTS respondToJoinBlock;
 DELIMITER $$
 CREATE PROCEDURE respondToJoinBlock (uid VARCHAR(30), request_uid VARCHAR(30), request_bid INT, req_time timestamp, result VARCHAR(30))
 BEGIN
+	DECLARE t timestamp;
+	SELECT CONVERT_TZ(req_time,'+00:00','-05:00') INTO t;
     INSERT INTO Approves (email, req_email, bid, request_time, choice, choice_time) 
-    VALUES (uid, request_uid, request_bid, req_time, result, CURRENT_TIMESTAMP());
-        
+    VALUES (uid, request_uid, request_bid, t, result, CURRENT_TIMESTAMP());
 END$$ 
 
 DROP PROCEDURE IF EXISTS addNeighbour;
@@ -57,7 +58,7 @@ BEGIN
     WHERE (uid1 = request_uid AND uid2 = respond_uid)
     OR (uid2 = request_uid AND uid1 = respond_uid)
     INTO recordExists;
-    IF recordExists THEN 
+    IF recordExists >0  THEN 
 		UPDATE Friend SET stat = 'REQUESTED', request_time =  CURRENT_TIMESTAMP()
          WHERE (uid1 = request_uid AND uid2 = respond_uid)
 		OR (uid2 = request_uid AND uid1 = respond_uid);
@@ -65,9 +66,7 @@ BEGIN
 		INSERT INTO Friend (uid1, uid2, stat, request_time) 
         VALUES (request_uid, respond_uid, 'REQUESTED', CURRENT_TIMESTAMP());
     END IF;
-    
 END$$ 
-
 
 DROP PROCEDURE IF EXISTS listAllBlockRequests;
 DELIMITER $$
@@ -75,7 +74,7 @@ CREATE PROCEDURE listAllBlockRequests (uid VARCHAR(30))
 BEGIN
     SELECT thread_id, ttype, sender_id, target_bid, fname, lname, title, start_time
     FROM Users JOIN 
-    (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, target_bid, title, date(start_time) AS start_time
+    (SELECT Thread.tid AS thread_id, ttype, Thread.email AS sender_id, target_bid, title, start_time
     FROM (SELECT DISTINCT tid FROM Access WHERE Access.email = uid AND stat = 'ACTIVE') As AccessibleThreads
     JOIN Thread USING (tid)  
 	WHERE Thread.ttype = 'JoinBlock') AS ResultThreads
@@ -175,11 +174,11 @@ END$$
 DROP PROCEDURE IF EXISTS CreateAccount;
 DELIMITER $$
 CREATE PROCEDURE CreateAccount (uid VARCHAR(30), first_name VARCHAR(30), last_name VARCHAR(30),
-  gender VARCHAR(30), passW VARCHAR(100))
+  gender VARCHAR(30), passW VARCHAR(50))
 BEGIN
 	INSERT INTO Users(email, fname, lname, gender, pword) 
     VALUES
-    (uid, first_name, last_name, gender, passW);
+    (uid, first_name, last_name, gender, aes_encrypt(passW, 'key'));
 END$$
 
 DROP PROCEDURE IF EXISTS getHoodFeeds;
@@ -309,7 +308,7 @@ BEGIN
   Receives JOIN Message USING (mid) JOIN 
   (SELECT tid
   FROM Access JOIN Thread USING(tid)
-  WHERE Access.email = uid AND 
+  WHERE Access.email = uid AND Access.stat = 'ACTIVE' AND 
   Thread.ttype = 'JoinBlock' OR Thread.ttype = 'FriendRequest') AS accessThreads USING (tid)
   WHERE Receives.email = uid AND Receives.stat = 'UNREAD'
   INTO nResults;
@@ -381,7 +380,7 @@ BEGIN
   DECLARE n INT;
   SELECT COUNT(*)
   FROM Users
-  WHERE email = uid AND pword = passW
+  WHERE email = uid AND pword = aes_encrypt(passW, 'key') 
   INTO n;
   RETURN n=1;
 END $$
