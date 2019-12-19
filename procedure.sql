@@ -425,6 +425,22 @@ BEGIN
     
 END$$
 
+DROP PROCEDURE IF EXISTS JoinBlockAt;
+DELIMITER $$
+CREATE PROCEDURE JoinBlockAt (uid VARCHAR(30), target_block INT, jtime timestamp)
+BEGIN
+	IF nPeopleInBlock(target_block) > 0 THEN 
+		INSERT INTO JOINS (req_email, bid, request_time, jstatus) VALUES
+		(uid,  target_block,  jtime, 'WAIT');
+    END IF;
+    
+	IF nPeopleInBlock(target_block) =0 THEN 
+		INSERT INTO JOINS (req_email, bid, request_time, jstatus, result_time) VALUES
+		(uid,  target_block,  jtime, 'JOINED', jtime);
+    END IF;
+    
+END$$
+
 DROP PROCEDURE IF EXISTS ListAllNeighbours;
 DELIMITER $$
 CREATE PROCEDURE ListAllNeighbours (uid VARCHAR(30))
@@ -559,7 +575,7 @@ DROP PROCEDURE IF EXISTS SearchMessageWith;
 DELIMITER $$
 CREATE PROCEDURE SearchMessageWith(uid VARCHAR(30), keyword VARCHAR(50))
 BEGIN
-	SELECT tid, mid, title, body
+	SELECT DISTINCT tid, title
     FROM Receives JOIN Message USING (mid) JOIN Thread using (tid)
     WHERE 
 	Receives.email = uid AND body LIKE CONCAT('%', keyword,'%')
