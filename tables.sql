@@ -129,11 +129,11 @@ CREATE TABLE Message(
 	email VARCHAR(30),
     body  VARCHAR(100) NOT NULL,
     send_time timestamp NOT NULL,
-    aid int,
+    lat float,
+    longt float,
     PRIMARY KEY (mid),
     CONSTRAINT FK_MSG_THREAD FOREIGN KEY (tid) REFERENCES Thread(tid) ON DELETE CASCADE,
-	CONSTRAINT FK_MSG_EMAIL FOREIGN KEY (email) REFERENCES Users(email),
-    CONSTRAINT FK_MSG_AID   FOREIGN KEY (aid) REFERENCES Address(aid)
+	CONSTRAINT FK_MSG_EMAIL FOREIGN KEY (email) REFERENCES Users(email)
 );
 
 /*

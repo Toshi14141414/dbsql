@@ -85,7 +85,7 @@ SELECT * FROM USERS;
 use PROJECT1;
 SELECT * FROM JOINS;
 SELECT * FROM Thread;
-
+SELECT * FROM BLOCKS;
 SELECT * FROM Access;
 
 call CreateAccount('mp5386@gmail.com', 'Mingyuan', 'Pang', 	'Female', 	'password');

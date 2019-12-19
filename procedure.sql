@@ -557,10 +557,14 @@ END$$
 
 DROP PROCEDURE IF EXISTS SearchMessageWith;
 DELIMITER $$
-CREATE PROCEDURE SearchMessageWith(uid VARCHAR(30), keyword VARCHAR(30))
+CREATE PROCEDURE SearchMessageWith(uid VARCHAR(30), keyword VARCHAR(50))
 BEGIN
-	SELECT mid, body, Message.send_time
-    FROM Receives JOIN Message USING (mid)
+	SELECT tid, mid, title, body
+    FROM Receives JOIN Message USING (mid) JOIN Thread using (tid)
     WHERE 
-	Receives.email = uid AND body LIKE CONCAT('%', keyword,'%');
+	Receives.email = uid AND body LIKE CONCAT('%', keyword,'%')
+    AND ttype <>'JoinBlock' AND ttype <> 'FriendRequest';
 END$$
+
+
+

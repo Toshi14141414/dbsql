@@ -1,6 +1,5 @@
 Use Project1;
 
-
 /*set up hoods and blocks*/
 INSERT INTO Hoods(hname, southwest_lat, southwest_long, northeast_lat, northeast_long) VALUES
 ('Downtown Brooklyn', 40.691928, -73.993051, 40.705222, -73.981389);
