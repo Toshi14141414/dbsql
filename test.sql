@@ -2,22 +2,12 @@ Use Project1;
 
 
 /*set up hoods and blocks*/
-INSERT INTO Hoods(hname, southwest_long, southwest_lat, northeast_long, northeast_lat) VALUES
+INSERT INTO Hoods(hname, southwest_lat, southwest_long, northeast_lat, northeast_long) VALUES
 ('Downtown Brooklyn', 40.691928, -73.993051, 40.705222, -73.981389);
 
-INSERT INTO Blocks(bname, southwest_long, southwest_lat, northeast_long, northeast_lat, hid) VALUES
-('Downtown Brooklyn Upper Block', 40.694759, -73.991206, 40.705222, -73.981389, 1), /*amberly 2*/
-('Downtown Brooklyn Lower Block', 40.691928, -73.993051, 40.695215, -73.981389, 1); /*addison 1*/
-
-/*
-set up Users and their addresses
-Addison: lower block
-Amberly: upper block
-*/
-
--- INSERT INTO Address (address, city, state, country, longtitude, latitude) VALUES
--- ('The Addison 225 Schermerhorn Street', 'Brooklyn', 'New York', 'U.S', 40.688878, -73.984662),
--- ('The Amberly Apartments 120 Nassau Street', 'Brooklyn', 'New York', 'U.S', 40.698528, -73.986615);
+INSERT INTO Blocks(bname, southwest_lat, southwest_long, northeast_lat, northeast_long, hid) VALUES
+('Downtown Brooklyn Upper Block', 40.694535, -74.001419, 40.705189, -73.978338, 1), /*amberly 2*/
+('Downtown Brooklyn Lower Block', 40.685888, -74.002498, 40.694797, -73.974655, 1); /*addison 1*/
 
 call CreateAccount('Od356@gmail.com', 'Oliver', 'David', 	'Male', 	'password');
 call CreateAccount('py615@gmail.com', 'Piao', 'Yang', 		'Male', 	'password');
@@ -36,6 +26,8 @@ call EnterAddress('Qc690@gmail.com', '15A', 40.698552, -73.986239);
 
 
 call listNearBlocks('Od356@gmail.com', 40.688919, -73.984866);
+-- SELECT 40.688919 > 40.685888 AND 40.688919 < 40.694797
+-- AND -73.984866 >  -74.002498 AND -73.984866 < -73.974655;
 
 -- INSERT INTO Users(email, fname, lname, gender, pword, aid, apt) VALUES
 -- ('Od356@gmail.com', 'Oliver', 'David', 		'Male', 	'password', 1, '15A'), /*addison*/

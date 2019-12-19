@@ -1,14 +1,15 @@
 DROP FUNCTION IF EXISTS containsInBlock;
 DELIMITER $$
 CREATE FUNCTION containsInBlock(lat float, longt float, 
-								southwest_long float, southwest_lat float, northeast_long float, northeast_lat float)
+								southwest_lat float,southwest_long float, northeast_lat float, northeast_long float)
 RETURNS BOOL
 DETERMINISTIC
 BEGIN
---   DECLARE contain BOOL;
---   SELECT TRUE
---   INTO contain;
-  RETURN true;
+  DECLARE contain BOOL;
+  SELECT lat > southwest_lat AND lat < northeast_lat AND longt > southwest_long AND longt < northeast_long
+  INTO contain;
+  
+  RETURN contain;
 END $$
 
 DROP PROCEDURE IF EXISTS listNearBlocks;
@@ -16,7 +17,7 @@ DELIMITER $$
 CREATE PROCEDURE listNearBlocks (uid VARCHAR(30), lat float, longt float)
 BEGIN
     SELECT bid, bname, southwest_long, southwest_lat, northeast_long, northeast_lat FROM Blocks
-    WHERE containsInBlock(lat, longt, southwest_long, southwest_lat, northeast_long, northeast_lat);
+    WHERE containsInBlock(lat, longt, southwest_lat, southwest_long, northeast_lat, northeast_long);
 END$$ 
 
 
