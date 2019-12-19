@@ -591,7 +591,7 @@ DETERMINISTIC
 BEGIN
 	DECLARE isF BOOL;
     SELECT count(*) > 0 FROM 
-    Friend WHERE (uid1 = id1 AND uid2 = id2) OR (uid1 = id2 AND uid2 = id1)
+    Friend WHERE (uid1 = id1 AND uid2 = id2) OR (uid1 = id2 AND uid2 = id1) AND stat = 'APPROVED'
     INTO isF;
 
 	IF id1 = id2 THEN
