@@ -15,7 +15,7 @@ DROP PROCEDURE IF EXISTS listNearBlocks;
 DELIMITER $$
 CREATE PROCEDURE listNearBlocks (uid VARCHAR(30), lat float, longt float)
 BEGIN
-    SELECT bid, southwest_long, southwest_lat, northeast_long, northeast_lat FROM Blocks
+    SELECT bid, bname, southwest_long, southwest_lat, northeast_long, northeast_lat FROM Blocks
     WHERE containsInBlock(lat, longt, southwest_long, southwest_lat, northeast_long, northeast_lat);
 END$$ 
 
