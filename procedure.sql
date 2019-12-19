@@ -412,19 +412,18 @@ END$$
 
 DROP PROCEDURE IF EXISTS JoinBlock;
 DELIMITER $$
-CREATE PROCEDURE JoinBlock (uid VARCHAR(30), target_block INT, req_time timestamp)
+CREATE PROCEDURE JoinBlock (uid VARCHAR(30), target_block INT)
 BEGIN
 	IF nPeopleInBlock(target_block) > 0 THEN 
 		INSERT INTO JOINS (req_email, bid, request_time, jstatus) VALUES
-		(uid,  target_block, req_time, 'WAIT');
+		(uid,  target_block,  CURRENT_TIMESTAMP(), 'WAIT');
     END IF;
     
 	IF nPeopleInBlock(target_block) =0 THEN 
 		INSERT INTO JOINS (req_email, bid, request_time, jstatus, result_time) VALUES
-		(uid,  target_block, req_time, 'JOINED', req_time);
+		(uid,  target_block,  CURRENT_TIMESTAMP(), 'JOINED', CURRENT_TIMESTAMP());
     END IF;
-
-
+    
 END$$
 
 DROP PROCEDURE IF EXISTS ListAllNeighbours;

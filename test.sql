@@ -44,44 +44,30 @@ If there is no one in the block, the user can join it directly
 otherwise
 the default join status is wait and it will be updated when the join is approved*/
 
-call JoinBlock('Od356@gmail.com',  2, '2019-10-01 09:00:00');
-call JoinBlock('py615@gmail.com',  2, '2019-10-01 09:00:00');
-call JoinBlock('Yc4184@gmail.com',  2, '2019-10-01 09:00:00');
-call JoinBlock('hz2162@gmail.com',  2, '2019-10-01 09:00:00');
+call JoinBlock('Od356@gmail.com', 2);
+call JoinBlock('py615@gmail.com', 2);
+call JoinBlock('Yc4184@gmail.com', 2);
+call JoinBlock('hz2162@gmail.com', 2);
 
--- INSERT INTO JOINS (req_email, bid, request_time, jstatus, result_time) VALUES
--- ('Od356@gmail.com',  2, '2019-10-01 09:00:00', 'JOINED', '2019-10-01 09:00:00');
+-- INSERT INTO Approves(email, req_email, bid, request_time, choice, choice_time) VALUES 
+-- ('Od356@gmail.com', 'py615@gmail.com',  2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-02 09:00:00'),
+-- ('Od356@gmail.com', 'Yc4184@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-02 10:00:00'),
+-- ('Od356@gmail.com', 'hz2162@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-02 11:00:00'),
+-- ('py615@gmail.com', 'Yc4184@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-03 09:00:00'),
+-- ('py615@gmail.com', 'hz2162@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-03 10:00:00'),
+-- ('Yc4184@gmail.com', 'hz2162@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-04 09:00:00')
+-- ;
 
--- INSERT INTO JOINS (req_email, bid, request_time, jstatus) VALUES
--- ('py615@gmail.com',	 2, '2019-10-01 09:00:00', 'WAIT'),
--- ('Yc4184@gmail.com', 2, '2019-10-01 09:00:00', 'WAIT'),
--- ('hz2162@gmail.com', 2, '2019-10-01 09:00:00', 'WAIT');
+-- call JoinBlock('Nj303@gmail.com', 1, '2019-10-01 09:00:00');
+-- call JoinBlock('Qc690@gmail.com', 1, '2019-10-01 09:00:00');
 
+-- INSERT INTO Approves(email, req_email, bid, request_time, choice, choice_time) VALUES
+-- ('Nj303@gmail.com', 'Qc690@gmail.com', 1, '2019-10-01 09:00:00', 'REJECT', '2019-10-02 09:00:00');
 
-/*
-Join status will be updated
-*/
+-- call JoinBlock('Qc690@gmail.com', 1, '2019-11-01 09:00:00');
 
-INSERT INTO Approves(email, req_email, bid, request_time, choice, choice_time) VALUES 
-('Od356@gmail.com', 'py615@gmail.com',  2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-02 09:00:00'),
-('Od356@gmail.com', 'Yc4184@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-02 10:00:00'),
-('Od356@gmail.com', 'hz2162@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-02 11:00:00'),
-('py615@gmail.com', 'Yc4184@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-03 09:00:00'),
-('py615@gmail.com', 'hz2162@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-03 10:00:00'),
-('Yc4184@gmail.com', 'hz2162@gmail.com', 2, '2019-10-01 09:00:00', 'APPROVE', '2019-10-04 09:00:00')
-;
-
-
-call JoinBlock('Nj303@gmail.com', 1, '2019-10-01 09:00:00');
-call JoinBlock('Qc690@gmail.com', 1, '2019-10-01 09:00:00');
-
-INSERT INTO Approves(email, req_email, bid, request_time, choice, choice_time) VALUES
-('Nj303@gmail.com', 'Qc690@gmail.com', 1, '2019-10-01 09:00:00', 'REJECT', '2019-10-02 09:00:00');
-
-call JoinBlock('Qc690@gmail.com', 1, '2019-11-01 09:00:00');
-
-INSERT INTO Approves(email, req_email, bid, request_time, choice, choice_time) VALUES
-('Nj303@gmail.com', 'Qc690@gmail.com', 1, '2019-11-01 09:00:00', 'APPROVE', '2019-11-02 09:00:00');
+-- INSERT INTO Approves(email, req_email, bid, request_time, choice, choice_time) VALUES
+-- ('Nj303@gmail.com', 'Qc690@gmail.com', 1, '2019-11-01 09:00:00', 'APPROVE', '2019-11-02 09:00:00');
 
 
 /*
@@ -91,45 +77,45 @@ while waiting, the user cannot send the request again
 he/she can only re-join after being rejected
 */
 
-INSERT INTO FRIEND (uid1, uid2, stat, request_time) VALUES
-('Od356@gmail.com', 'Yc4184@gmail.com', 'REQUESTED', '2019-10-15 09:00:00'),
-('Od356@gmail.com', 'py615@gmail.com',  'REQUESTED', '2019-10-15 09:00:00'),
-('Od356@gmail.com', 'hz2162@gmail.com', 'REQUESTED', '2019-10-15 09:00:00'),
-('py615@gmail.com', 'Yc4184@gmail.com', 'REQUESTED', '2019-10-15 09:00:00'),
-('py615@gmail.com', 'hz2162@gmail.com', 'REQUESTED', '2019-10-15 09:00:00'),
-('Yc4184@gmail.com', 'hz2162@gmail.com', 'REQUESTED', '2019-10-15 09:00:00');
+-- INSERT INTO FRIEND (uid1, uid2, stat, request_time) VALUES
+-- ('Od356@gmail.com', 'Yc4184@gmail.com', 'REQUESTED', '2019-10-15 09:00:00'),
+-- ('Od356@gmail.com', 'py615@gmail.com',  'REQUESTED', '2019-10-15 09:00:00'),
+-- ('Od356@gmail.com', 'hz2162@gmail.com', 'REQUESTED', '2019-10-15 09:00:00'),
+-- ('py615@gmail.com', 'Yc4184@gmail.com', 'REQUESTED', '2019-10-15 09:00:00'),
+-- ('py615@gmail.com', 'hz2162@gmail.com', 'REQUESTED', '2019-10-15 09:00:00'),
+-- ('Yc4184@gmail.com', 'hz2162@gmail.com', 'REQUESTED', '2019-10-15 09:00:00');
 
-UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
-WHERE uid1 = 'Od356@gmail.com' AND uid2 = 'Yc4184@gmail.com';
+-- UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
+-- WHERE uid1 = 'Od356@gmail.com' AND uid2 = 'Yc4184@gmail.com';
 
-UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
-WHERE uid1 = 'Od356@gmail.com' AND uid2 = 'py615@gmail.com';
+-- UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
+-- WHERE uid1 = 'Od356@gmail.com' AND uid2 = 'py615@gmail.com';
 
-UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
-WHERE uid1 = 'Od356@gmail.com' AND uid2 = 'hz2162@gmail.com';
+-- UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
+-- WHERE uid1 = 'Od356@gmail.com' AND uid2 = 'hz2162@gmail.com';
 
-UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
-WHERE uid1 = 'py615@gmail.com' AND uid2 = 'Yc4184@gmail.com';
+-- UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
+-- WHERE uid1 = 'py615@gmail.com' AND uid2 = 'Yc4184@gmail.com';
 
-UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
-WHERE uid1 = 'py615@gmail.com' AND uid2 = 'hz2162@gmail.com';
+-- UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
+-- WHERE uid1 = 'py615@gmail.com' AND uid2 = 'hz2162@gmail.com';
 
-UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
-WHERE uid1 = 'Yc4184@gmail.com' AND uid2 = 'hz2162@gmail.com';
+-- UPDATE FRIEND SET stat = 'APPROVED', establish_time = '2019-10-15 10:00:00'
+-- WHERE uid1 = 'Yc4184@gmail.com' AND uid2 = 'hz2162@gmail.com';
 
-INSERT INTO NEIGHBOUR (uid1, uid2, request_time, stat) VALUES 
-('Qc690@gmail.com', 'Nj303@gmail.com', '2019-11-15 09:00:00', 'VALID'),
-('Nj303@gmail.com', 'Qc690@gmail.com', '2019-11-15 09:00:00', 'VALID');
+-- INSERT INTO NEIGHBOUR (uid1, uid2, request_time, stat) VALUES 
+-- ('Qc690@gmail.com', 'Nj303@gmail.com', '2019-11-15 09:00:00', 'VALID'),
+-- ('Nj303@gmail.com', 'Qc690@gmail.com', '2019-11-15 09:00:00', 'VALID');
 
 
-INSERT INTO Thread (tid, ttype, title, email, start_time) VALUES
-(100,  'AllFriends', 'Does anyone wants to join me?', 		 'Od356@gmail.com', '2019-10-15 09:00:00');
+-- INSERT INTO Thread (tid, ttype, title, email, start_time) VALUES
+-- (100,  'AllFriends', 'Does anyone wants to join me?', 		 'Od356@gmail.com', '2019-10-15 09:00:00');
 
-INSERT INTO Message(tid, email, body, send_time) VALUES
-(100, 'Od356@gmail.com', 'I am going to the MET this Sat. Anyone wants to join?', '2019-10-15 09:00:00'),
-(100, 'py615@gmail.com', "I'm in!", '2019-10-15 09:01:00'),
-(100, 'hz2162@gmail.com', "Me too.", '2019-10-15 09:02:00'),
-(100, 'Od356@gmail.com', 'Great!', '2019-10-15 09:03:00');
+-- INSERT INTO Message(tid, email, body, send_time) VALUES
+-- (100, 'Od356@gmail.com', 'I am going to the MET this Sat. Anyone wants to join?', '2019-10-15 09:00:00'),
+-- (100, 'py615@gmail.com', "I'm in!", '2019-10-15 09:01:00'),
+-- (100, 'hz2162@gmail.com', "Me too.", '2019-10-15 09:02:00'),
+-- (100, 'Od356@gmail.com', 'Great!', '2019-10-15 09:03:00');
 
 -- INSERT INTO Thread (tid, ttype, title, email, start_time) VALUES
 -- (101,  'Block', 	 'To All People in lower Downtown BK', 	 'Od356@gmail.com', '2019-10-15 09:00:00');
@@ -146,19 +132,19 @@ INSERT INTO Message(tid, email, body, send_time) VALUES
 -- INSERT INTO Thread (tid, ttype, title, email, start_time, target_uid) VALUES
 -- (202,  'Neighbour',  'Hi Jack, I just want to say hello',       'Qc690@gmail.com', '2019-10-15 09:00:00');
 
-call StartMessageWith('Od356@gmail.com', 'py615@gmail.com', 'Friend',
-					'Greeting From Oliver', 'Hi there.');
+-- call StartMessageWith('Od356@gmail.com', 'py615@gmail.com', 'Friend',
+-- 					'Greeting From Oliver', 'Hi there.');
 
 
-call StartMessageWith('Qc690@gmail.com', 'Nj303@gmail.com', 'Neighbour',
-					'Greeting', 'Hi Jack, I just want to say hello.');
+-- call StartMessageWith('Qc690@gmail.com', 'Nj303@gmail.com', 'Neighbour',
+-- 					'Greeting', 'Hi Jack, I just want to say hello.');
 
-call StartMessageIn('Nj303@gmail.com', 'Hood',
-					'First Message in Hood', 'This is the first message in Hood.');
-call StartMessageIn('Nj303@gmail.com', 'Block',
-					'First Message in Block', 'This is the first message in Block.');
+-- call StartMessageIn('Nj303@gmail.com', 'Hood',
+-- 					'First Message in Hood', 'This is the first message in Hood.');
+-- call StartMessageIn('Nj303@gmail.com', 'Block',
+-- 					'First Message in Block', 'This is the first message in Block.');
 
-call StartMessageIn('py615@gmail.com', 'Block', 'Block msg', 'Hi friends.');
- --                    
+-- call StartMessageIn('py615@gmail.com', 'Block', 'Block msg', 'Hi friends.');
+--  --                    
 
 

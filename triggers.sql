@@ -127,13 +127,17 @@ CREATE TRIGGER JoinStatusUpdateTrigger
 BEGIN
     /*change access list*/
     IF old.jstatus <>'JOINED' AND new.jstatus = 'JOINED' THEN 
+		 /*delete thread*/
+        DELETE FROM Thread
+        WHERE ttype = 'JoinBlock' AND
+        email = new.req_email AND target_bid = new.bid;
+        
 		/*retrieve all threads about join request (in 'WAIT' status) in that block*/
 		INSERT INTO Access(tid, email, stat)
 		SELECT tid, new.req_email, 'ACTIVE'
 		FROM Thread Join Joins 
 		WHERE
 		ttype = 'JoinBlock' AND
-		title = 'Join Request' AND
 		target_bid IS NOT NULL and target_bid = new.bid AND
         Thread.email = Joins.req_email AND /*whoever sends the request still waits*/
         Joins.jstatus = 'WAIT';
@@ -144,17 +148,11 @@ BEGIN
         FROM Message Join Thread USING (tid) Join Joins 
         WHERE 
         ttype = 'JoinBlock' AND
-		title = 'Join Request' AND
 		target_bid IS NOT NULL and target_bid = new.bid AND
         Thread.email = Joins.req_email AND /*whoever sends the request still waits*/
         Joins.jstatus = 'WAIT';
         
-        
-        /*delete thread*/
-        DELETE FROM Thread
-        WHERE ttype = 'JoinBlock' AND
-        email = new.req_email AND target_bid = new.bid;
-        
+			
     END IF;
     
     

@@ -83,5 +83,7 @@ SELECT ValidateUser('mp5386@gmail.com', 'pasord');
 -- call listAllBlockRequests('Od356@gmail.com');
 SELECT * FROM USERS;
 use PROJECT1;
-select aes_encrypt('password', 'key');
+SELECT * FROM JOINS;
+SELECT * FROM Thread;
 
+SELECT * FROM Access;
